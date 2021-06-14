@@ -6,7 +6,7 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import Cards from './Cards';
+import Card from './Card';
 
 function App() {
   const[isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -72,7 +72,7 @@ function App() {
         title = "вы уверены?"
       />
       <ImagePopup />
-        image = { ('./images/place-andora.jpg') }
+        {/* image = { './images/place-andora.jpg' } */}
     </div>
   );
 }

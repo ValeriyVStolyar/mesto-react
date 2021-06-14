@@ -1,20 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import api from '../utils/Api';
-import Cards from './Cards';
+import Card from './Card';
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
   const[userName, setUserName] = React.useState([]);
   const[userDescription, setUserDescription] = React.useState([]);
   const[userAvatar, setUserAvatar] = React.useState([]);
 
-  const[Cards, setCards] = React.useState([]);
+  const[cards, setCards] = React.useState([]);
   const[isCardsName, setIsCardsName] = React.useState([]);
   const[isCardsLikes, setIsCardsLikes] = React.useState([]);
   const[isCardsImage, setIsCardsImage] = React.useState([]);
 //function Main(props) {
 //  const[onEditAvatar, onEditProfile, onAddPlace] = React.useState(false);
   //console.log(onEditAvatar)
-   console.log(Cards)
+  // console.log(isCardsImage)
+  // console.log(cards)
   // console.log(userDescription)
   // console.log(userAvatar)
   // const [isActive, setIsActive] = React.useState(false);
@@ -35,24 +36,31 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
   useEffect(() => {
     api.getCards()
       .then((result) => {
-        console.log(result)
+    //    console.log(result)
         setCards(result);
-        result.map((card) => {
-          setIsCardsName(card.name);
-        //  setUserDescription(card._id);
-          setIsCardsLikes(card.likes.length);
-          // console.log(card)
+    //   result.find((card) => {
+          // setIsCardsName(card.name);
+          // setIsCardsLikes(card.likes.length);
+          // setIsCardsImage(card.link);
+          
+           console.log(result)
           // console.log(card.name)
           // console.log(card._id)
-          // console.log(card.link)
-          console.log(card.likes.length)
-        })
+          //console.log(card.link)
+          // console.log(card.likes.length)
+    //    })
         // setIsCardsName(result.name);
         // setIsCardsLikes(result.likes);
         // setIsCardsImage(result.link);
       })
       .catch(err => console.log('Ошибка при получании карточек'));
   })
+
+
+    // cards.map((card) => {
+    //   console.log(card.name);
+    // })
+
 
   return (
     <main className="content">
@@ -65,10 +73,10 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
           <button type="button" aria-label="Открыть попап редактирования аватара" className="button button_type_edit-avatar" onClick={onEditAvatar}></button>
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">Жак-Ив Кусто</h1>
+          <h1 className="profile__title">{userName}</h1>
           <button type="button" aria-label="Открыть попап" className="button button_type_edit" onClick ={onEditProfile}>
           </button>
-          <p className="profile__subtitle">Исследователь океана</p>
+          <p className="profile__subtitle">{userDescription}</p>
         </div>
         <button type="button" aria-label="Добавить карточку" className="button button_type_add-card" onClick={onAddPlace}>
         </button>
@@ -125,18 +133,24 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
           <button type="submit" aria-label="Сохранить" className="button button_type_submit">Сохранить</button>
         </form>
       </article> */}
-       {/* <article className="place">
-      <button type="button" aria-label="Удалить" className="button button_type_remove"></button>
-      <img src="<%=require('./images/place-niagara-falls.jpg')%>" alt="Картинка" className="place__image" />
-      <img src={isCards.link} alt="Картинка" className="place__image" />
-      <div className="place__list-sights">
-        <h2 className="place__title"></h2>
-        <div className="place__like-conteiner">
-          <button type="button" aria-label="Лайкнуть" className="button button_type_like"></button>
-          <p className="place__text"></p>
-        </div>
-      </div>
-    </article> */}
+      {cards.map((card) =>
+      // <article className="place">
+      //   <button type="button" aria-label="Удалить" className="button button_type_remove"></button>
+      //   {/* <img src="<%=require('./images/place-niagara-falls.jpg')%>" alt="Картинка" className="place__image" /> */}
+      //   <img src={card.link} alt="Картинка" className="place__image" />
+      //   <div className="place__list-sights">
+      //     {/* <h2 className="place__title">{isCardsName}</h2> */}
+      //     <h2 className="place__title">{card.name}</h2>
+      //     <div className="place__like-conteiner">
+      //       <button type="button" aria-label="Лайкнуть" className="button button_type_like"></button>
+      //       <p className="place__text">{card.likes.length}</p>
+      //     </div>
+      //   </div>
+      // </article>
+      <Card
+        card = {card}
+      />
+      )}
     {/* {Cards.map((card) => {
       <Cards
         card = {card}
@@ -144,6 +158,13 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
         setCard = {setCards} 
       />    
     })} */}
+
+      {/* <Card
+        card = {card}
+        key = {card._id}
+        setCard = {setCards} 
+      />  */}
+
     </main>
   );
 }
