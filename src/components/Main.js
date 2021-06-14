@@ -2,15 +2,15 @@ import React, {useState, useEffect} from 'react';
 import api from '../utils/Api';
 import Card from './Card';
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const[userName, setUserName] = React.useState([]);
   const[userDescription, setUserDescription] = React.useState([]);
   const[userAvatar, setUserAvatar] = React.useState([]);
 
   const[cards, setCards] = React.useState([]);
-  const[isCardsName, setIsCardsName] = React.useState([]);
-  const[isCardsLikes, setIsCardsLikes] = React.useState([]);
-  const[isCardsImage, setIsCardsImage] = React.useState([]);
+  // const[isCardsName, setIsCardsName] = React.useState([]);
+  // const[isCardsLikes, setIsCardsLikes] = React.useState([]);
+  // const[isCardsImage, setIsCardsImage] = React.useState([]);
 //function Main(props) {
 //  const[onEditAvatar, onEditProfile, onAddPlace] = React.useState(false);
   //console.log(onEditAvatar)
@@ -43,7 +43,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
           // setIsCardsLikes(card.likes.length);
           // setIsCardsImage(card.link);
           
-           console.log(result)
+          // console.log(result)
           // console.log(card.name)
           // console.log(card._id)
           //console.log(card.link)
@@ -82,6 +82,26 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
         </button>
       </section>
       <section aria-label="Фотографии мест" className="places">
+      {cards.map((card) =>
+      // <article className="place">
+      //   <button type="button" aria-label="Удалить" className="button button_type_remove"></button>
+      //   {/* <img src="<%=require('./images/place-niagara-falls.jpg')%>" alt="Картинка" className="place__image" /> */}
+      //   <img src={card.link} alt="Картинка" className="place__image" />
+      //   <div className="place__list-sights">
+      //     {/* <h2 className="place__title">{isCardsName}</h2> */}
+      //     <h2 className="place__title">{card.name}</h2>
+      //     <div className="place__like-conteiner">
+      //       <button type="button" aria-label="Лайкнуть" className="button button_type_like"></button>
+      //       <p className="place__text">{card.likes.length}</p>
+      //     </div>
+      //   </div>
+      // </article>
+      <Card
+        card = {card}
+        onCardClick = {onCardClick}
+      //  key = {card._id}
+      />
+      )}
       </section>
       {/* <article className="popup popup_place_profile">
         <form action="#" method="POST" name="Input-list-profile" className="popup__container popup__validate" novalidate>
@@ -133,38 +153,6 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
           <button type="submit" aria-label="Сохранить" className="button button_type_submit">Сохранить</button>
         </form>
       </article> */}
-      {cards.map((card) =>
-      // <article className="place">
-      //   <button type="button" aria-label="Удалить" className="button button_type_remove"></button>
-      //   {/* <img src="<%=require('./images/place-niagara-falls.jpg')%>" alt="Картинка" className="place__image" /> */}
-      //   <img src={card.link} alt="Картинка" className="place__image" />
-      //   <div className="place__list-sights">
-      //     {/* <h2 className="place__title">{isCardsName}</h2> */}
-      //     <h2 className="place__title">{card.name}</h2>
-      //     <div className="place__like-conteiner">
-      //       <button type="button" aria-label="Лайкнуть" className="button button_type_like"></button>
-      //       <p className="place__text">{card.likes.length}</p>
-      //     </div>
-      //   </div>
-      // </article>
-      <Card
-        card = {card}
-      />
-      )}
-    {/* {Cards.map((card) => {
-      <Cards
-        card = {card}
-        key = {card._id}
-        setCard = {setCards} 
-      />    
-    })} */}
-
-      {/* <Card
-        card = {card}
-        key = {card._id}
-        setCard = {setCards} 
-      />  */}
-
     </main>
   );
 }
