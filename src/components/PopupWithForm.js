@@ -1,5 +1,4 @@
 import React from 'react';
-import './PopupWithForm.css';
 
 function PoupWithForm({name, title, isOpen, onClose, children, save}) {
 
