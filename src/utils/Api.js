@@ -138,11 +138,6 @@ class Api {
   }
 }
 
-// const api = new Api({address: 'https://mesto.nomoreparties.co',
-// token: '83427565-56e8-48c1-b66e-268601726ef3',
-// groupID: 'cohort-24'
-// })
-
 const config = {address: 'https://mesto.nomoreparties.co',
 token: '83427565-56e8-48c1-b66e-268601726ef3',
 groupID: 'cohort-24'
