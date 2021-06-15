@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PoupWithForm({name, title, isOpen, onClose, children, save}) {
+function PopupWithForm({name, title, isOpen, onClose, children, save}) {
 
   return (
     <article className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}>
@@ -14,4 +14,4 @@ function PoupWithForm({name, title, isOpen, onClose, children, save}) {
   );
 }
 
-export default PoupWithForm;
+export default PopupWithForm;
