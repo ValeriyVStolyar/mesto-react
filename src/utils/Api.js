@@ -1,5 +1,5 @@
 class Api {
-  constructor({address, token, groupID}) {
+  constructor({ address, token, groupID }) {
     this._address = address;
     this._token = token;
     this._groupID = groupID;
@@ -11,12 +11,7 @@ class Api {
         authorization: this._token
       }
     })
-    .then((res) => {
-      if(!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-      }
-      return res.json();
-    })
+      .then(this._checkResponse);
   }
 
   getCards() {
@@ -25,12 +20,7 @@ class Api {
         authorization: this._token
       }
     })
-    .then((res) => {
-      if(!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-      }
-      return res.json();
-    })
+      .then(this._checkResponse);
   }
 
   reviewUserInfo(formData) {
@@ -45,12 +35,7 @@ class Api {
         about: formData.job
       })
     })
-      .then((res) => {
-        if(!res.ok) {
-          return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-        }
-        return res.json();
-      })
+      .then(this._checkResponse);
   }
 
   addCard(formData) {
@@ -65,12 +50,7 @@ class Api {
         link: formData.link
       })
     })
-      .then((res) => {
-        if(!res.ok) {
-          return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-        }
-        return res.json();
-      })
+      .then(this._checkResponse);
   }
 
   deleteCard(cardId) {
@@ -80,12 +60,7 @@ class Api {
         authorization: this._token
       }
     })
-    .then((res) => {
-      if(!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-      }
-      return res.json();
-    })
+      .then(this._checkResponse);
   }
 
   likeCard(cardId) {
@@ -95,12 +70,7 @@ class Api {
         authorization: this._token
       }
     })
-    .then((res) => {
-      if(!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-      }
-      return res.json();
-    })
+      .then(this._checkResponse);
   }
 
   deleteLikeCard(cardId) {
@@ -110,12 +80,7 @@ class Api {
         authorization: this._token
       }
     })
-    .then((res) => {
-      if(!res.ok) {
-        return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-      }
-      return res.json();
-    })
+      .then(this._checkResponse);
   }
 
   changeAvatar(formData) {
@@ -129,18 +94,21 @@ class Api {
         avatar: formData.avatar
       })
     })
-      .then((res) => {
-        if(!res.ok) {
-          return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-        }
-        return res.json();
-      })
+      .then(this._checkResponse);
+  }
+
+  _checkResponse(res) {
+    if (!res.ok) {
+      return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
+    }
+    return res.json();
   }
 }
 
-const config = {address: 'https://mesto.nomoreparties.co',
-token: '83427565-56e8-48c1-b66e-268601726ef3',
-groupID: 'cohort-24'
+const config = {
+  address: 'https://mesto.nomoreparties.co',
+  token: '83427565-56e8-48c1-b66e-268601726ef3',
+  groupID: 'cohort-24'
 }
 
 const api = new Api(config);

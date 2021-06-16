@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import api from '../utils/Api';
+import React, { useState, useEffect } from 'react';
+import api from '../utils/api';
 import Card from './Card';
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-  const[userName, setUserName] = React.useState([]);
-  const[userDescription, setUserDescription] = React.useState([]);
-  const[userAvatar, setUserAvatar] = React.useState([]);
-  const[cards, setCards] = React.useState([]);
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
 
   useEffect(() => {
     api.getInfoUser()
@@ -16,7 +16,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         setUserAvatar(result.avatar);
       })
       .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
-  })
+  }, [])
 
   useEffect(() => {
     api.getCards()
@@ -24,7 +24,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         setCards(result);
       })
       .catch(err => console.log('Ошибка при получании карточек'));
-  })
+  }, [])
 
   return (
     <main className="content">
@@ -35,7 +35,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         </div>
         <div className="profile__info">
           <h1 className="profile__title">{userName}</h1>
-          <button type="button" aria-label="Открыть попап" className="button button_type_edit" onClick ={onEditProfile}>
+          <button type="button" aria-label="Открыть попап" className="button button_type_edit" onClick={onEditProfile}>
           </button>
           <p className="profile__subtitle">{userDescription}</p>
         </div>
@@ -43,13 +43,14 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         </button>
       </section>
       <section aria-label="Фотографии мест" className="places">
-      {cards.map((card) =>
-      <Card
-        card = {card}
-        onCardClick = {onCardClick}
-        key = {card._id}
-      />
-      )}
+        {cards.map((card) => (
+          <Card
+            card={card}
+            onCardClick={onCardClick}
+            key={card._id}
+          />
+        )
+        )}
       </section>
     </main>
   );
