@@ -5,7 +5,7 @@ class Api {
     this._groupID = groupID;
   }
 
-  getInfoUser() {
+  getUserInfo() {
     return fetch(`${this._address}/v1/${this._groupID}/users/me`, {
       headers: {
         authorization: this._token
@@ -63,7 +63,8 @@ class Api {
       .then(this._checkResponse);
   }
 
-  likeCard(cardId) {
+//  likeCard(cardId) {
+  changeLikeCardStatus(cardId) {
     return fetch(`${this._address}/v1/${this._groupID}/cards/likes/${cardId}`, {
       method: 'PUT',
       headers: {

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../utils/api';
 import Card from './Card';
+import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [userName, setUserName] = React.useState('');
@@ -8,38 +9,67 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setCards] = React.useState([]);
 
-  useEffect(() => {
-    api.getInfoUser()
-      .then((result) => {
-        setUserName(result.name);
-        setUserDescription(result.about);
-        setUserAvatar(result.avatar);
-      })
-      .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
-  }, [])
+  const currentUser = useContext(CurrentUserContext);
+  console.log(currentUser)
+
+  // useEffect(() => {
+  //   api.getUserInfo()
+  //     .then((result) => {
+  //       setUserName(result.name);
+  //       setUserDescription(result.about);
+  //       setUserAvatar(result.avatar);
+  //     })
+  //     .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
+  // }, [])
 
   useEffect(() => {
     api.getCards()
       .then((result) => {
+        console.log(result)
         setCards(result);
       })
       .catch(err => console.log('Ошибка при получании карточек'));
   }, [])
 
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(card._id, !isLiked)
+    .then((newCard) => {
+      console.log(newCard)
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    });
+}
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+    .then(() => {
+      console.log()
+      setCards(cards.filter(item =>
+        item._id !== card._id)
+     )
+    });
+  }
+
   return (
     <main className="content">
       <section className="profile">
         <div className="profile__block">
-          <img src={userAvatar} alt="Аватар" className="profile__image" />
-          <button type="button" aria-label="Открыть попап редактирования аватара" className="button button_type_edit-avatar" onClick={onEditAvatar}></button>
+          <img src={currentUser.avatar} alt="Аватар" className="profile__image" />
+          <button type="button" aria-label="Открыть попап редактирования аватара"
+          className="button button_type_edit-avatar" onClick={onEditAvatar}></button>
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">{userName}</h1>
-          <button type="button" aria-label="Открыть попап" className="button button_type_edit" onClick={onEditProfile}>
+          <h1 className="profile__title">{currentUser.name}</h1>
+          <button type="button" aria-label="Открыть попап"
+          className="button button_type_edit" onClick={onEditProfile}>
           </button>
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{currentUser.about}</p>
         </div>
-        <button type="button" aria-label="Добавить карточку" className="button button_type_add-card" onClick={onAddPlace}>
+        <button type="button" aria-label="Добавить карточку"
+        className="button button_type_add-card" onClick={onAddPlace}>
         </button>
       </section>
       <section aria-label="Фотографии мест" className="places">
@@ -47,6 +77,8 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
           <Card
             card={card}
             onCardClick={onCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
             key={card._id}
           />
         )

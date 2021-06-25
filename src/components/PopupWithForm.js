@@ -4,7 +4,7 @@ function PopupWithForm({ name, title, isOpen, onClose, children, save }) {
 
   return (
     <article className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}>
-      <form action="#" method="POST" name={'Input-list-${name}'} className="popup__container popup__validate">
+      <form action="#" method="POST" name={`Input-list-${name}`} className="popup__container popup__validate">
         <button type="button" aria-label="Закрыть попап" className="button button_type_close" onClick={onClose}></button>
         <h2 className="popup__title">{title}</h2>
         {children}
