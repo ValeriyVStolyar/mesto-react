@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup';
 import { api } from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 //import Card from './Card';
 
 function App() {
@@ -74,6 +75,20 @@ function App() {
     .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
   }
 
+  const handleUpdateAvatar = (user) => {
+    console.log(user)
+    api.setUserAvatar(user)
+  //  console.log(user)
+  //  api.reviewUserInfo(user.name, user.about)
+    .then((result) => {
+      console.log(result)
+      setCurrentUser(result);
+//      console.log(currentUser)
+      closeAllPopups();
+    })
+    .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -100,17 +115,6 @@ function App() {
           <span className="popup__input-error popup__link-error"></span>
         </PopupWithForm>
         <PopupWithForm
-          name="avatar"
-          title="обновить аватар"
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          save="Сохранить"
-        >
-          <input id="popup__avatar" type="url" name="avatar" placeholder="https://somewebsite.com/someimage.jpg"
-            className="popup__input popup__input_type_avatar" required />
-          <span className="popup__input-error popup__avatar-error"></span>
-        </PopupWithForm>
-        <PopupWithForm
           name="submition"
           title="вы уверены?"
           save="да"
@@ -120,6 +124,11 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser = {handleUpdateUser}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
         />
         <ImagePopup
           card={selectedCard}

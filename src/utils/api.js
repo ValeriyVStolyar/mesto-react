@@ -25,7 +25,7 @@ class Api {
 
   reviewUserInfo(formData) {
   //reviewUserInfo(name, job) {
-    console.log(formData)
+  //  console.log(formData)
   //  console.log(name, job)
     return fetch(`${this._address}/v1/${this._groupID}/users/me`, {
       method: 'PATCH',
@@ -90,7 +90,7 @@ class Api {
       .then(this._checkResponse);
   }
 
-  changeAvatar(formData) {
+  setUserAvatar(formData) {
     return fetch(`${this._address}/v1/${this._groupID}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
