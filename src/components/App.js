@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { api } from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import EditProfilePopup from './EditProfilePopup';
 //import Card from './Card';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState('');
   const [cards, setCards] = React.useState('');
 
-  function handleEditAvatarClick() {
+  const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
   }
 
@@ -45,7 +46,7 @@ function App() {
     .then((result) => {
       console.log(result)
       setCurrentUser(result);
-      console.log(currentUser)
+//      console.log(currentUser)
     })
     .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
   }, [])
@@ -59,6 +60,20 @@ function App() {
       .catch(err => console.log('Ошибка при получании карточек'));
   }, [])
 
+  const handleUpdateUser = (user) => {
+    console.log(user)
+    api.reviewUserInfo(user)
+  //  console.log(user)
+  //  api.reviewUserInfo(user.name, user.about)
+    .then((result) => {
+      console.log(result)
+      setCurrentUser(result);
+//      console.log(currentUser)
+      closeAllPopups();
+    })
+    .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -70,19 +85,6 @@ function App() {
           onCardClick={handleCardClick}
         />
         <Footer />
-        <PopupWithForm
-          name="profile"
-          title="редактировать профиль"
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          save="Сохранить">
-          <input id="popup__name" type="text" name="name" placeholder="Имя" className="popup__input popup__input_type_name"
-            minLength="2" maxLength="40" required />
-          <span className="popup__input-error popup__name-error"></span>
-          <input id="popup__job" type="text" name="job" placeholder="О себе" className="popup__input popup__input_type_job"
-            minLength="2" maxLength="200" required />
-          <span className="popup__input-error popup__job-error"></span>
-        </PopupWithForm>
         <PopupWithForm
           name="places"
           title="новое место"
@@ -114,6 +116,11 @@ function App() {
           save="да"
         >
         </PopupWithForm>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser = {handleUpdateUser}
+        />
         <ImagePopup
           card={selectedCard}
           onClose={closeAllPopups}

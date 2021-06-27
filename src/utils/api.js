@@ -24,6 +24,9 @@ class Api {
   }
 
   reviewUserInfo(formData) {
+  //reviewUserInfo(name, job) {
+    console.log(formData)
+  //  console.log(name, job)
     return fetch(`${this._address}/v1/${this._groupID}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -32,7 +35,10 @@ class Api {
       },
       body: JSON.stringify({
         name: formData.name,
-        about: formData.job
+      //  name: name,
+      //  about: formData.job
+        about: formData.about
+      //  about: job
       })
     })
       .then(this._checkResponse);
