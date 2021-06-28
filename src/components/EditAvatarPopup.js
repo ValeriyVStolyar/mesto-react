@@ -3,13 +3,11 @@ import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  //console.log(isOpen)
   const [avatar, setAvatar] = useState('');
   const currentUser = useContext(CurrentUserContext);
   const avatarDom = React.useRef();
 
   React.useEffect(() => {
-  //  setAvatar(currentUser.avatar);
   }, [currentUser]);
 
   function handleChange(e) {

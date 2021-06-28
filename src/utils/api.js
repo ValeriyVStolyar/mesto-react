@@ -24,9 +24,6 @@ class Api {
   }
 
   setUserInfo(formData) {
-  //reviewUserInfo(name, job) {
-  //  console.log(formData)
-  //  console.log(name, job)
     return fetch(`${this._address}/v1/${this._groupID}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -35,17 +32,13 @@ class Api {
       },
       body: JSON.stringify({
         name: formData.name,
-      //  name: name,
-      //  about: formData.job
         about: formData.about
-      //  about: job
       })
     })
       .then(this._checkResponse);
   }
 
   addCard(formData) {
-    console.log(formData)
     return fetch(`${this._address}/v1/${this._groupID}/cards`, {
       method: 'POST',
       headers: {
@@ -54,7 +47,6 @@ class Api {
       },
       body: JSON.stringify({
         name: formData.name,
-      //  name: formData.place,
         link: formData.link
       })
     })
@@ -71,7 +63,6 @@ class Api {
       .then(this._checkResponse);
   }
 
-//  likeCard(cardId) {
   changeLikeCardStatus(cardId) {
     return fetch(`${this._address}/v1/${this._groupID}/cards/likes/${cardId}`, {
       method: 'PUT',

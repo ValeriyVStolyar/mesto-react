@@ -46,7 +46,6 @@ function App() {
     api.getUserInfo()
       .then((result) => {
         setCurrentUser(result);
-        //      console.log(currentUser)
       })
       .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
   }, [])
@@ -62,26 +61,17 @@ function App() {
   const handleUpdateUser = (user) => {
     console.log(user)
     api.setUserInfo(user)
-      //  console.log(user)
-      //  api.reviewUserInfo(user.name, user.about)
       .then((result) => {
-        console.log(result)
         setCurrentUser(result);
-        //      console.log(currentUser)
         closeAllPopups();
       })
       .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
   }
 
   const handleUpdateAvatar = (user) => {
-    console.log(user)
     api.setUserAvatar(user)
-      //  console.log(user)
-      //  api.reviewUserInfo(user.name, user.about)
       .then((result) => {
-        console.log(result)
         setCurrentUser(result);
-        //      console.log(currentUser)
         closeAllPopups();
       })
       .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
@@ -91,49 +81,21 @@ function App() {
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    console.log(isLiked)
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    //   api.deleteLikeCard(card._id, isLiked)
-    //   .then((newCard) => {
-    //     console.log(newCard)
-    //       setCards((state) => {
-    //         console.log(state)
-    //         return state.map((c) => {
-    // //          console.log(c)
-    //           return c._id === card._id ? newCard : c
-    //         })
-    //       });
-    //   });
-
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        console.log(newCard)
         setCards((state) => {
-          console.log(state)
           return state.map((c) => {
-            //          console.log(c)
             return c._id === card._id ? newCard : c
           })
         });
       });
     api.deleteLikeCard(card._id, isLiked)
       .then((newCard) => {
-        console.log(newCard)
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       });
   }
-
-  // function handleCardDislike(card) {
-  //   // Снова проверяем, есть ли уже лайк на этой карточке
-  //   const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-  //   api.deleteLikeCard(card._id, isLiked)
-  //   .then((newCard) => {
-  //     console.log(newCard)
-  //       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-  //   });
-  // }
 
   function handleCardDelete(card) {
     api.deleteCard(card._id)
@@ -146,15 +108,9 @@ function App() {
   }
 
   const handleAddPlaceSubmit = (newCard) => {
-    console.log(newCard)
     api.addCard(newCard)
-      //  console.log(user)
-      //  api.reviewUserInfo(user.name, user.about)
       .then((result) => {
-        console.log(result)
-        //  setCards(result);
         setCards([result, ...cards]);
-        //      console.log(currentUser)
         closeAllPopups();
       })
       .catch(err => console.log('Ошибка. Запрос на добавление карточки не выполнен.'));

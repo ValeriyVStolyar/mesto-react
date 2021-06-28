@@ -3,7 +3,6 @@ import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-  //console.log(isOpen)
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const currentUser = useContext(CurrentUserContext);
@@ -29,22 +28,16 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
     // Передаём значения управляемых компонентов во внешний обработчик
     onUpdateUser({
-    //  name: name,
       name,
       about: description,
-      //  description,
     });
-    console.log(name)
-    console.log(description)
   }
 
   return (
     <PopupWithForm
       name="profile"
       title="редактировать профиль"
-      // isOpen={isEditProfilePopupOpen}
       isOpen={isOpen}
-      // onClose={closeAllPopups}
       onClose={onClose}
       save="Сохранить"
       onSubmit={handleSubmit}>
