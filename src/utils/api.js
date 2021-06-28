@@ -23,7 +23,7 @@ class Api {
       .then(this._checkResponse);
   }
 
-  reviewUserInfo(formData) {
+  setUserInfo(formData) {
   //reviewUserInfo(name, job) {
   //  console.log(formData)
   //  console.log(name, job)
@@ -45,6 +45,7 @@ class Api {
   }
 
   addCard(formData) {
+    console.log(formData)
     return fetch(`${this._address}/v1/${this._groupID}/cards`, {
       method: 'POST',
       headers: {
@@ -52,7 +53,8 @@ class Api {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        name: formData.place,
+        name: formData.name,
+      //  name: formData.place,
         link: formData.link
       })
     })

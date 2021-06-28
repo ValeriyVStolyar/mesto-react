@@ -8,16 +8,16 @@ import { api } from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
-//import Card from './Card';
+import AddPlacePopup from './AddPlacePopup';
+
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
-
   const [currentUser, setCurrentUser] = React.useState('');
-  const [cards, setCards] = React.useState('');
+  const [cards, setCards] = React.useState([]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -44,18 +44,16 @@ function App() {
 
   useEffect(() => {
     api.getUserInfo()
-    .then((result) => {
-      console.log(result)
-      setCurrentUser(result);
-//      console.log(currentUser)
-    })
-    .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
+      .then((result) => {
+        setCurrentUser(result);
+        //      console.log(currentUser)
+      })
+      .catch(err => console.log('Ошибка. Запрос на получение инфо о пользователе не выполнен.'));
   }, [])
 
   useEffect(() => {
     api.getCards()
       .then((result) => {
-        console.log(result)
         setCards(result);
       })
       .catch(err => console.log('Ошибка при получании карточек'));
@@ -63,30 +61,103 @@ function App() {
 
   const handleUpdateUser = (user) => {
     console.log(user)
-    api.reviewUserInfo(user)
-  //  console.log(user)
-  //  api.reviewUserInfo(user.name, user.about)
-    .then((result) => {
-      console.log(result)
-      setCurrentUser(result);
-//      console.log(currentUser)
-      closeAllPopups();
-    })
-    .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
+    api.setUserInfo(user)
+      //  console.log(user)
+      //  api.reviewUserInfo(user.name, user.about)
+      .then((result) => {
+        console.log(result)
+        setCurrentUser(result);
+        //      console.log(currentUser)
+        closeAllPopups();
+      })
+      .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
   }
 
   const handleUpdateAvatar = (user) => {
     console.log(user)
     api.setUserAvatar(user)
-  //  console.log(user)
-  //  api.reviewUserInfo(user.name, user.about)
-    .then((result) => {
-      console.log(result)
-      setCurrentUser(result);
-//      console.log(currentUser)
-      closeAllPopups();
-    })
-    .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
+      //  console.log(user)
+      //  api.reviewUserInfo(user.name, user.about)
+      .then((result) => {
+        console.log(result)
+        setCurrentUser(result);
+        //      console.log(currentUser)
+        closeAllPopups();
+      })
+      .catch(err => console.log('Ошибка. Запрос на обновление профиля не выполнен.'));
+  }
+
+
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    console.log(isLiked)
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    //   api.deleteLikeCard(card._id, isLiked)
+    //   .then((newCard) => {
+    //     console.log(newCard)
+    //       setCards((state) => {
+    //         console.log(state)
+    //         return state.map((c) => {
+    // //          console.log(c)
+    //           return c._id === card._id ? newCard : c
+    //         })
+    //       });
+    //   });
+
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        console.log(newCard)
+        setCards((state) => {
+          console.log(state)
+          return state.map((c) => {
+            //          console.log(c)
+            return c._id === card._id ? newCard : c
+          })
+        });
+      });
+    api.deleteLikeCard(card._id, isLiked)
+      .then((newCard) => {
+        console.log(newCard)
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      });
+  }
+
+  // function handleCardDislike(card) {
+  //   // Снова проверяем, есть ли уже лайк на этой карточке
+  //   const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+  //   api.deleteLikeCard(card._id, isLiked)
+  //   .then((newCard) => {
+  //     console.log(newCard)
+  //       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+  //   });
+  // }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id)
+      .then(() => {
+        console.log()
+        setCards(cards.filter(item =>
+          item._id !== card._id)
+        )
+      });
+  }
+
+  const handleAddPlaceSubmit = (newCard) => {
+    console.log(newCard)
+    api.addCard(newCard)
+      //  console.log(user)
+      //  api.reviewUserInfo(user.name, user.about)
+      .then((result) => {
+        console.log(result)
+        //  setCards(result);
+        setCards([result, ...cards]);
+        //      console.log(currentUser)
+        closeAllPopups();
+      })
+      .catch(err => console.log('Ошибка. Запрос на добавление карточки не выполнен.'));
   }
 
   return (
@@ -98,22 +169,11 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer />
-        <PopupWithForm
-          name="places"
-          title="новое место"
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          save="Сохранить"
-        >
-          <input id="popup__place" type="text" name="place" placeholder="Название"
-            className="popup__input popup__input_type_place" minLength="2" maxLength="30" required />
-          <span className="popup__input-error popup__place-error"></span>
-          <input id="popup__link" type="url" name="link" placeholder="Ссылка на картинку"
-            className="popup__input popup__input_type_link" required />
-          <span className="popup__input-error popup__link-error"></span>
-        </PopupWithForm>
         <PopupWithForm
           name="submition"
           title="вы уверены?"
@@ -123,7 +183,7 @@ function App() {
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
-          onUpdateUser = {handleUpdateUser}
+          onUpdateUser={handleUpdateUser}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
@@ -133,6 +193,11 @@ function App() {
         <ImagePopup
           card={selectedCard}
           onClose={closeAllPopups}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
         />
       </div>
     </CurrentUserContext.Provider>
