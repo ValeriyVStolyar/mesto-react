@@ -4,7 +4,7 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import { api } from '../utils/api';
+import api from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -59,7 +59,6 @@ function App() {
   }, [])
 
   const handleUpdateUser = (user) => {
-    console.log(user)
     api.setUserInfo(user)
       .then((result) => {
         setCurrentUser(result);

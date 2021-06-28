@@ -111,5 +111,6 @@ const config = {
   groupID: 'cohort-24'
 }
 
-export const api = new Api(config);
+const api = new Api(config);
+export default api;
 
