@@ -16,7 +16,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
-  const [currentUser, setCurrentUser] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
   const handleEditAvatarClick = () => {
@@ -89,11 +89,14 @@ function App() {
             return c._id === card._id ? newCard : c
           })
         });
-      });
+      })
+      .catch(err => console.log('Ошибка. Запрос на покраску лайка не выполнен.'));
+
     api.deleteLikeCard(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      });
+      })
+      .catch(err => console.log('Ошибка. Запрос на уменьшение лайка не выполнен.'));
   }
 
   function handleCardDelete(card) {
@@ -103,7 +106,8 @@ function App() {
         setCards(cards.filter(item =>
           item._id !== card._id)
         )
-      });
+      })
+      .catch(err => console.log('Ошибка. Запрос на удаление карточки не выполнен.'));
   }
 
   const handleAddPlaceSubmit = (newCard) => {

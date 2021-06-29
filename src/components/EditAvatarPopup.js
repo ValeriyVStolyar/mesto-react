@@ -3,16 +3,11 @@ import PopupWithForm from './PopupWithForm';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const [avatar, setAvatar] = useState('');
   const currentUser = useContext(CurrentUserContext);
   const avatarDom = React.useRef();
 
   React.useEffect(() => {
   }, [currentUser]);
-
-  function handleChange(e) {
-    setAvatar(e.target.value);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -32,7 +27,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       onSubmit={handleSubmit}
     >
       <input id="popup__avatar" type="url" name="avatar" placeholder="https://somewebsite.com/someimage.jpg"
-        className="popup__input popup__input_type_avatar" required onChange={handleChange}
+        className="popup__input popup__input_type_avatar" required
         ref={avatarDom} />
       <span className="popup__input-error popup__avatar-error"></span>
     </PopupWithForm>

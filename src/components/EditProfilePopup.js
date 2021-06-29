@@ -20,7 +20,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
@@ -42,11 +42,11 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       save="Сохранить"
       onSubmit={handleSubmit}>
       <input id="popup__name" type="text" name="name" placeholder="Имя"
-        className="popup__input popup__input_type_name" value={name}
+        className="popup__input popup__input_type_name" value={name || ''}
         minLength="2" maxLength="40" required onChange={handleChangeName} />
       <span className="popup__input-error popup__name-error"></span>
       <input id="popup__job" type="text" name="job" placeholder="О себе"
-        className="popup__input popup__input_type_job" value={description}
+        className="popup__input popup__input_type_job" value={description || ''}
         minLength="2" maxLength="200" required onChange={handleChangeDescription} />
       <span className="popup__input-error popup__job-error"></span>
     </PopupWithForm>
