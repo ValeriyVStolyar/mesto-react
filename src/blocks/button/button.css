@@ -3,6 +3,6 @@
 }
 
 .button:hover {
-  opacity: .00006;
+  opacity: .6;
   cursor: pointer;
 }
